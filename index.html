@@ -124,7 +124,8 @@ function responseHandler(response){
         if(id_token !== null) {
         	localStorage.setItem(profile.getEmail(), id_token);
         	var email = profile.getEmail();
-        	window.location = "http://13.232.71.239:8080/gSignIn/?token=" + id_token;
+		alert("http://13.232.71.239:8080/gSignIn/?token=" + id_token + "&email=" + profile.getEmail());
+        	window.location = "http://13.232.71.239:8080/gSignIn/?token=" + id_token + "&email=" + profile.getEmail();
         	/*alert('Welcome ' + profile.getGivenName() + '!');*/
         }
         console.log("ID Token: " + id_token);
