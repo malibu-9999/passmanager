@@ -1,0 +1,143 @@
+<html>
+<link rel="stylesheet" href="/css/styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+<head>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="445277804402-0fon2ieh1caj3f5lcpl26dr555onjf9h.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+  </head>
+<div class="topnav" id="myTopnav">
+	<a class="active">Password Manager</a>
+</div>
+<body>
+
+<div class="container">
+	<label for="fname">First name</label><br>
+	<input type="text" id="fname" value=""><br>
+	<label for="fname">Password</label><br>
+  	<input type="password" id="password" value=""><br>
+  	<button type="submit" id="demo" class="btn">Login</button>
+  	<div class="space"></div>
+  	<div class="divider"></div>
+  	<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" style="padding-top: 5%; padding-left: 35%"></div>
+  	
+</div>
+<style>
+
+html {
+	background-color: #F0F8FF;
+	font-family: 'Roboto', sans-serif;
+}
+
+.space {
+	padding-top: 5%;
+}
+
+.divider {
+	
+	border-top: 2px solid red;
+	
+}
+
+.btn {
+	background-color: blue;
+	border: 1px solid #dddddd;
+  	text-align: center;
+  	width: 100%;
+  	font-family: 'Roboto', sans-serif;
+}
+
+@media screen and (max-width: 600px) {
+	.container {
+		margin: 0 0 0 2%;
+		font-size: 200%;
+		width: 100%;
+	}
+	input[type=text], input[type=password] {
+  		padding: 10px 18px;
+  		margin: 8px 0;
+  		border: 1px solid #ccc;
+  		font-size: 25px;
+}
+}
+</style>
+<script>
+document.getElementById("demo").onclick = function() {myFunction()};
+
+function myFunction() {
+	var name = document.getElementById("fname").value;
+	var password = document.getElementById("password").value;
+	
+	if(name != "" && password != ""){
+		var email;
+		var Ipassword;
+		var Itoken;
+		var obj;
+		var jsondata;
+		let _data = {
+  			email: name,
+  			Ipassword: password
+  			
+		}
+		fetch('http://localhost:8080/login', {
+  			method: "POST",
+  			body: JSON.stringify(_data),
+  			headers: {"Content-type": "application/json; charset=UTF-8"}
+		})
+			.then(response => response.json())
+			.then(json => responseHandler(json));
+			
+	} else {
+		alert("Cannot send empty request");
+	}
+	
+}
+
+function responseHandler(response){
+		if(response.status == 200) {
+			localStorage.setItem(response.response.email, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6InZhbXNpIiwiaWF0IjoxNTE2MjM5MDIyfQ.uRuPZW3LY5NY5_o96rSCXFspdGs9DslFHflQ-nyORuU");
+			var token = localStorage.key(0);
+			window.location = "http://localhost:8080/welcome/?fname=" + token;
+		} else {
+			window.location = "http://localhost:8080/welcome";
+			alert("user doest not exist");
+		}
+}
+
+</script>
+
+
+<script>
+	
+      function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log('Full Name: ' + profile.getName());
+        console.log('Given Name: ' + profile.getGivenName());
+        console.log('Family Name: ' + profile.getFamilyName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
+
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        if(id_token !== null) {
+        	localStorage.setItem(profile.getEmail(), id_token);
+        	var email = profile.getEmail();
+        	window.location = "http://localhost:8080/gSignIn/?token=" + id_token;
+        	/*alert('Welcome ' + profile.getGivenName() + '!');*/
+        }
+        console.log("ID Token: " + id_token);
+      }
+
+</script>
+    
+    
+<footer class="footer">
+	<div >
+		<p>All rights reserved @vamsi.</p>
+	</div>
+</footer>
+</body>
+<meta content="width=device-width, initial-scale=1" name="viewport" />
+</html>
