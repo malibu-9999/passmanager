@@ -79,7 +79,7 @@ function myFunction() {
   			Ipassword: password
   			
 		}
-		fetch('http://localhost:8080/login', {
+		fetch('http://13.232.71.239:8080/login', {
   			method: "POST",
   			body: JSON.stringify(_data),
   			headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -97,9 +97,9 @@ function responseHandler(response){
 		if(response.status == 200) {
 			localStorage.setItem(response.response.email, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6InZhbXNpIiwiaWF0IjoxNTE2MjM5MDIyfQ.uRuPZW3LY5NY5_o96rSCXFspdGs9DslFHflQ-nyORuU");
 			var token = localStorage.key(0);
-			window.location = "http://localhost:8080/welcome/?fname=" + token;
+			window.location = "http://13.232.71.239:8080/welcome/?fname=" + token;
 		} else {
-			window.location = "http://localhost:8080/welcome";
+			window.location = "http://13.232.71.239:8080/welcome";
 			alert("user doest not exist");
 		}
 }
@@ -124,7 +124,7 @@ function responseHandler(response){
         if(id_token !== null) {
         	localStorage.setItem(profile.getEmail(), id_token);
         	var email = profile.getEmail();
-        	window.location = "http://localhost:8080/gSignIn/?token=" + id_token;
+        	window.location = "http://13.232.71.239:8080/gSignIn/?token=" + id_token;
         	/*alert('Welcome ' + profile.getGivenName() + '!');*/
         }
         console.log("ID Token: " + id_token);
