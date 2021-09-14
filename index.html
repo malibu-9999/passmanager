@@ -1,5 +1,5 @@
 <html>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="/css/styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 <head>
     <meta name="google-signin-scope" content="profile email">
@@ -19,7 +19,7 @@
   	<button type="submit" id="demo" class="btn">Login</button>
   	<div class="space"></div>
   	<div class="divider"></div>
-  	<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" style="padding-top: 5%; padding-left: 35%"></div>
+  	<div class="g-signin2" data-onsuccess="onSignIn" onclick="signIn()" data-theme="dark" style="padding-top: 5%; padding-left: 35%"></div>
   	
 </div>
 <style>
@@ -108,7 +108,9 @@ function responseHandler(response){
 
 
 <script>
-	
+	let isSignInSuccess = 0;
+	var username = "";
+	var googleToken = "";
       function onSignIn(googleUser) {
         // Useful data for your client-side scripts:
         var profile = googleUser.getBasicProfile();
@@ -122,13 +124,26 @@ function responseHandler(response){
         // The ID token you need to pass to your backend:
         var id_token = googleUser.getAuthResponse().id_token;
         if(id_token !== null) {
+        	isSignInSuccess = 1;
+        	
         	localStorage.setItem(profile.getEmail(), id_token);
+        	username = profile.getEmail();
+        	googleToken = id_token;
         	var email = profile.getEmail();
-		
-        	window.location = "http://13.232.71.239:8080/gSignIn/?token=" + id_token + "&email=" + profile.getEmail();
+        	
         	/*alert('Welcome ' + profile.getGivenName() + '!');*/
         }
         console.log("ID Token: " + id_token);
+      }
+      
+      function signIn() {
+      setTimeout(function(){
+      }, 5000);
+      	if(isSignInSuccess) {
+      		window.location = "http://13.232.71.239:8080/gSignIn/?token=" + googleToken + "&email=" + username;
+      	} else {
+      		window.location = "http://13.232.71.239:8080/";
+      	}
       }
 
 </script>
