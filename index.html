@@ -1,5 +1,5 @@
 <html>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="/css/styles.css">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 <head>
     <meta name="google-signin-scope" content="profile email">
@@ -12,11 +12,7 @@
 <body>
 
 <div class="container">
-	<label for="fname">First name</label><br>
-	<input type="text" id="fname" value=""><br>
-	<label for="fname">Password</label><br>
-  	<input type="password" id="password" value=""><br>
-  	<button type="submit" id="demo" class="btn">Login</button>
+	<p>Sign Up or Sign In with Google.</p>
   	<div class="space"></div>
   	<div class="divider"></div>
   	<div class="g-signin2" data-onsuccess="onSignIn" onclick="signIn()" data-theme="dark" style="padding-top: 5%; padding-left: 35%"></div>
@@ -37,6 +33,11 @@ html {
 	
 	border-top: 2px solid red;
 	
+}
+
+.p {
+	text-align: center;
+	font-size: 200%;
 }
 
 .btn {
@@ -61,50 +62,7 @@ html {
 }
 }
 </style>
-<script>
-document.getElementById("demo").onclick = function() {myFunction()};
 
-function myFunction() {
-	var name = document.getElementById("fname").value;
-	var password = document.getElementById("password").value;
-	
-	if(name != "" && password != ""){
-		var email;
-		var Ipassword;
-		var Itoken;
-		var obj;
-		var jsondata;
-		let _data = {
-  			email: name,
-  			Ipassword: password
-  			
-		}
-		fetch('http://13.232.71.239:8080/login', {
-  			method: "POST",
-  			body: JSON.stringify(_data),
-  			headers: {"Content-type": "application/json; charset=UTF-8"}
-		})
-			.then(response => response.json())
-			.then(json => responseHandler(json));
-			
-	} else {
-		alert("Cannot send empty request");
-	}
-	
-}
-
-function responseHandler(response){
-		if(response.status == 200) {
-			localStorage.setItem(response.response.email, "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6InZhbXNpIiwiaWF0IjoxNTE2MjM5MDIyfQ.uRuPZW3LY5NY5_o96rSCXFspdGs9DslFHflQ-nyORuU");
-			var token = localStorage.key(0);
-			window.location = "http://13.232.71.239:8080/welcome/?fname=" + token;
-		} else {
-			window.location = "http://13.232.71.239:8080/welcome";
-			alert("user doest not exist");
-		}
-}
-
-</script>
 
 
 <script>
@@ -134,6 +92,7 @@ function responseHandler(response){
         	/*alert('Welcome ' + profile.getGivenName() + '!');*/
         }
         console.log("ID Token: " + id_token);
+        
       }
       
       function signIn() {
@@ -141,8 +100,6 @@ function responseHandler(response){
       }, 5000);
       	if(isSignInSuccess) {
       		window.location = "http://13.232.71.239:8080/gSignIn/?token=" + googleToken + "&email=" + username;
-      	} else {
-      		window.location = "https://malibu-9999.github.io/passmanager/";
       	}
       }
 
