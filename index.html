@@ -4,7 +4,7 @@
 <head>
     <meta name="google-signin-scope" content="profile email">
     <meta name="google-signin-client_id" content="445277804402-0fon2ieh1caj3f5lcpl26dr555onjf9h.apps.googleusercontent.com">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/client:platform.js?onload=init" async defer></script>
   </head>
 <div class="topnav" id="myTopnav">
 	<a class="active">Password Manager</a>
@@ -15,7 +15,8 @@
 	<p>Sign Up or Sign In with Google.</p>
   	<div class="space"></div>
   	<div class="divider"></div>
-  	<div class="g-signin2" data-onsuccess="onSignIn" onclick="signIn()" data-theme="dark" style="padding-top: 5%; padding-left: 35%"></div>
+  	
+  	<button id="g-signin2" class="btn" >Continue with Google</button>
   	
 </div>
 <style>
@@ -66,6 +67,20 @@ html {
 
 
 <script>
+
+	function init() {
+        gapi.load('auth2', function() {
+            auth2 = gapi.auth2.init({
+                client_id: '445277804402-0fon2ieh1caj3f5lcpl26dr555onjf9h.apps.googleusercontent.com',
+                cookiepolicy: 'single_host_origin',
+                scope: 'profile email'
+            });
+            console.log(auth2);
+            element = document.getElementById('g-signin2');
+            auth2.attachClickHandler(element, {}, onSignIn, onFailure);
+        });
+    }
+	
 	let isSignInSuccess = 0;
 	var username = "";
 	var googleToken = "";
@@ -92,7 +107,9 @@ html {
         	/*alert('Welcome ' + profile.getGivenName() + '!');*/
         }
         console.log("ID Token: " + id_token);
-        
+        if(isSignInSuccess) {
+        	signIn();
+        }
       }
       
       function signIn() {
@@ -101,6 +118,10 @@ html {
       	if(isSignInSuccess) {
       		window.location = "http://13.232.71.239:8080/gSignIn/?token=" + googleToken + "&email=" + username;
       	}
+      }
+      
+      function onFailure() {
+      	console.log('Failed');
       }
 
 </script>
